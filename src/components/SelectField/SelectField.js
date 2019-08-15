@@ -4,18 +4,30 @@ import styled from "styled-components";
 import Dropdown, { MenuItem } from "../Dropdown";
 
 const Wrapper = styled.div`
+  form {
+    margin: 1rem;
+    input {
+      padding: 0.7rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 2rem;
+      outline: none;
+    }
+  }
   input[type="submit"] {
     display: none;
   }
 `;
 
 const CustomDropdown = styled(Dropdown)`
+  width: 100%;
   padding: 2px 0;
 `;
 CustomDropdown.propTypes = Dropdown.propTypes;
 CustomDropdown.defaultProps = Dropdown.defaultProps;
 
-const CustomDropdownToggle = styled(Dropdown.Toggle)``;
+const CustomDropdownToggle = styled(Dropdown.Toggle)`
+  width: 100%;
+`;
 CustomDropdownToggle.propTypes = Dropdown.Toggle.propTypes;
 CustomDropdownToggle.defaultProps = Dropdown.Toggle.defaultProps;
 
@@ -23,7 +35,10 @@ const CustomDropdownMenuWrapper = styled(Dropdown.MenuWrapper)``;
 CustomDropdownMenuWrapper.propTypes = Dropdown.Menu.propTypes;
 CustomDropdownMenuWrapper.defaultProps = Dropdown.Menu.defaultProps;
 
-const CustomDropdownMenu = styled(Dropdown.Menu)``;
+const CustomDropdownMenu = styled(Dropdown.Menu)`
+  width: 100%;
+  padding: 0px;
+`;
 CustomDropdownMenu.propTypes = Dropdown.Menu.propTypes;
 CustomDropdownMenu.defaultProps = Dropdown.Menu.defaultProps;
 

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { setup } from "axios-cache-adapter";
 
@@ -10,9 +9,10 @@ import Table from "./Table/Table";
 const Wrapper = styled.div`
   color: #000;
   font-family: ${props => props.fontFamily};
+  margin: 0 5rem;
   .wrapper {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     margin: 3rem auto;
   }
 `;
@@ -28,13 +28,20 @@ class Landing extends Component {
   state = {
     banks: [],
     filteredBanks: [],
-    selectQuery: "MUMBAI"
+    selectQuery: "MUMBAI",
+    loading: true
   };
 
   componentDidMount = () => {
     api
       .get("/banks?city=MUMBAI")
-      .then(res => this.setState({ banks: res.data, filteredBanks: res.data }))
+      .then(res =>
+        this.setState({
+          banks: res.data,
+          filteredBanks: res.data,
+          loading: false
+        })
+      )
       .catch(err => console.log(err));
   };
 
@@ -63,10 +70,16 @@ class Landing extends Component {
   };
 
   selectChangeHandler = option => {
-    this.setState({ selectQuery: option.toUpperCase() });
+    this.setState({ selectQuery: option.toUpperCase(), loading: true });
     api
       .get(`/banks?city=${option.toUpperCase()}`)
-      .then(res => this.setState({ banks: res.data, filteredBanks: res.data }))
+      .then(res =>
+        this.setState({
+          banks: res.data,
+          filteredBanks: res.data,
+          loading: false
+        })
+      )
       .catch(err => console.log(err));
   };
 
@@ -80,7 +93,7 @@ class Landing extends Component {
           />
           <SearchField changeHandler={this.searchChangeHandler} />
         </div>
-        <Table banks={this.state.filteredBanks} />
+        <Table banks={this.state.filteredBanks} loading={this.state.loading} />
       </Wrapper>
     );
   }
