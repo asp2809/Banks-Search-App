@@ -10,7 +10,7 @@ import Table from "./Table/Table";
 const Wrapper = styled.div`
   color: #000;
   font-family: ${props => props.fontFamily};
-  div {
+  .wrapper {
     display: flex;
     justify-content: space-evenly;
     margin: 3rem auto;
@@ -27,7 +27,8 @@ const api = setup({
 class Landing extends Component {
   state = {
     banks: [],
-    filteredBanks: []
+    filteredBanks: [],
+    selectQuery: "MUMBAI"
   };
 
   componentDidMount = () => {
@@ -62,6 +63,7 @@ class Landing extends Component {
   };
 
   selectChangeHandler = option => {
+    this.setState({ selectQuery: option.toUpperCase() });
     api
       .get(`/banks?city=${option.toUpperCase()}`)
       .then(res => this.setState({ banks: res.data, filteredBanks: res.data }))
@@ -71,8 +73,11 @@ class Landing extends Component {
   render() {
     return (
       <Wrapper>
-        <div>
-          <SelectField changeHandler={this.selectChangeHandler} />
+        <div className="wrapper">
+          <SelectField
+            changeHandler={this.selectChangeHandler}
+            searchQuery={this.state.selectQuery}
+          />
           <SearchField changeHandler={this.searchChangeHandler} />
         </div>
         <Table banks={this.state.filteredBanks} />

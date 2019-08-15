@@ -9,11 +9,11 @@ const TableWrapper = styled.div`
       background-color: #313131;
     }
     tbody {
-      font-weight: 400;
       font-size: 1.4rem;
     }
     th,
     td {
+      font-weight: 500;
       padding: 15px;
       text-align: left;
       max-width: 20rem;
