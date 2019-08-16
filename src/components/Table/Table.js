@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import { IoIosStarOutline } from "react-icons/io";
+import { IoIosStar } from "react-icons/io";
 
 const TableWrapper = styled.div`
   .rt-thead {
@@ -13,13 +15,36 @@ const TableWrapper = styled.div`
   .rt-tr {
     padding: 1rem;
   }
+  .tip {
+    text-align: center;
+  }
+  .favorite {
+    text-align: center;
+  }
 `;
-
 const Table = props => {
+  const processData = () => {
+    props.banks.forEach(bank => {
+      if (props.favBanks.filter(el => el.ifsc === bank.ifsc).length > 0) {
+        bank["favorite"] = (
+          <div className="favorite" onClick={() => props.favBanksHandler(bank)}>
+            <IoIosStar />
+          </div>
+        );
+      } else {
+        bank["favorite"] = (
+          <div className="favorite" onClick={() => props.favBanksHandler(bank)}>
+            <IoIosStarOutline />
+          </div>
+        );
+      }
+    });
+    return props.banks;
+  };
   return (
     <TableWrapper {...props}>
       <ReactTable
-        data={props.banks}
+        data={processData()}
         columns={[
           {
             Header: "IFSC",
@@ -52,6 +77,10 @@ const Table = props => {
           {
             Header: "State",
             accessor: "state"
+          },
+          {
+            Header: "Favorite",
+            accessor: "favorite"
           }
         ]}
         defaultPageSize={10}
@@ -59,6 +88,9 @@ const Table = props => {
         showPaginationBottom
         loading={props.loading}
       />
+      <div className="tip">
+        <em>Click on a row to add it to favBanks</em>
+      </div>
     </TableWrapper>
   );
 };

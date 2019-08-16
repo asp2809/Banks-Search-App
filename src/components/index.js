@@ -20,7 +20,10 @@ const Wrapper = styled.div`
 const api = setup({
   baseURL: "https://vast-shore-74260.herokuapp.com",
   cache: {
-    maxAge: 15 * 60 * 1000
+    maxAge: 15 * 60 * 1000,
+    exclude: {
+      query: false
+    }
   }
 });
 
@@ -29,7 +32,8 @@ class Landing extends Component {
     banks: [],
     filteredBanks: [],
     selectQuery: "MUMBAI",
-    loading: true
+    loading: true,
+    favBanks: []
   };
 
   componentDidMount = () => {
@@ -39,7 +43,8 @@ class Landing extends Component {
         this.setState({
           banks: res.data,
           filteredBanks: res.data,
-          loading: false
+          loading: false,
+          favBanks: []
         })
       )
       .catch(err => console.log(err));
@@ -83,6 +88,27 @@ class Landing extends Component {
       .catch(err => console.log(err));
   };
 
+  favBanksHandler = bank => {
+    let fav = localStorage.getItem("favBanks")
+      ? localStorage.getItem("favBanks").split(",")
+      : [];
+
+    console.log(fav);
+    if (fav.length !== 0) {
+      fav.forEach((el, index, arr) => (arr[index] = JSON.parse(el)));
+    }
+    if (fav.filter(el => bank.ifsc === el.ifsc).length > 0) {
+      fav = fav.filter(el => bank.ifsc !== el.ifsc);
+    } else {
+      fav = [...fav, bank];
+    }
+    if (fav.length !== 0) {
+      fav.forEach((el, index, arr) => (arr[index] = JSON.stringify(el)));
+    }
+    // localStorage.setItem("favBanks", fav.toString());
+    this.setState({ favBanks: fav });
+  };
+
   render() {
     return (
       <Wrapper>
@@ -93,7 +119,12 @@ class Landing extends Component {
           />
           <SearchField changeHandler={this.searchChangeHandler} />
         </div>
-        <Table banks={this.state.filteredBanks} loading={this.state.loading} />
+        <Table
+          favBanks={this.state.favBanks}
+          banks={this.state.filteredBanks}
+          loading={this.state.loading}
+          favBanksHandler={this.favBanksHandler}
+        />
       </Wrapper>
     );
   }
