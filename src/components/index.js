@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { setup } from "axios-cache-adapter";
+import { toast } from "react-toastify";
 
 import SelectField from "./SelectField/SelectField";
 import SearchField from "./SearchField/SearchField";
@@ -11,9 +12,59 @@ const Wrapper = styled.div`
   font-family: ${props => props.fontFamily};
   margin: 0 5rem;
   .wrapper {
-    display: flex;
-    justify-content: space-between;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      .heading {
+        font-size: 1.2rem;
+        /* padding: 1rem 0; */
+        letter-spacing: 3px;
+        font-weight: 200;
+        text-transform: uppercase;
+      }
+    }
     margin: 3rem auto;
+  }
+  .tables {
+    .nav {
+      display: flex;
+      flex-direction: row;
+      .banks,
+      .favorites {
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        flex: 1;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 1.2rem;
+        color: #333;
+        font-weight: 200;
+        padding: 1.5rem;
+        cursor: pointer;
+      }
+
+      .banks {
+        background-color: ${props =>
+          props.active === "banks" ? "#00a5a5" : "#fff"};
+        color: ${props => (props.active === "banks" ? "#fff" : "#000")};
+      }
+
+      .favorites {
+        background-color: ${props =>
+          props.active === "favorites" ? "#00a5a5" : "#fff"};
+        color: ${props => (props.active === "favorites" ? "#fff" : "#000")};
+      }
+
+      .banks:hover,
+      .favorites:hover {
+        transition: all 0.4s;
+        background-color: #00a5a5;
+        color: #fff;
+      }
+    }
   }
 `;
 
@@ -33,24 +84,26 @@ class Landing extends Component {
     filteredBanks: [],
     selectQuery: "MUMBAI",
     loading: true,
-    favBanks: []
+    favBanks: [],
+    activeTab: "banks"
   };
 
   componentDidMount = () => {
     api
       .get("/banks?city=MUMBAI")
       .then(res =>
-        this.setState(
-          {
-            banks: res.data,
-            filteredBanks: res.data,
-            loading: false,
-            favBanks: JSON.parse(localStorage.getItem("favBanks") || "[]")
-          },
-          console.log(res.data)
-        )
+        this.setState({
+          banks: res.data,
+          filteredBanks: res.data,
+          loading: false,
+          favBanks: JSON.parse(localStorage.getItem("favBanks") || "[]")
+        })
       )
-      .catch(err => console.log(err));
+      .catch(err =>
+        toast.error("Something's Not Right!", {
+          position: toast.POSITION.TOP_RIGHT
+        })
+      );
   };
 
   queryCheckHandler = (query, bank) => {
@@ -93,7 +146,6 @@ class Landing extends Component {
 
   favBanksHandler = ifsc => {
     let fav = JSON.parse(localStorage.getItem("favBanks") || "[]");
-    console.log(fav);
 
     if (fav.filter(el => ifsc === el.ifsc).length > 0) {
       fav = fav.filter(el => ifsc !== el.ifsc);
@@ -106,23 +158,60 @@ class Landing extends Component {
     this.setState({ favBanks: fav });
   };
 
+  switchTabHandler = tab => {
+    this.setState({
+      activeTab: tab
+    });
+  };
+
   render() {
-    console.log(this.state.banks);
-    return (
-      <Wrapper>
-        <div className="wrapper">
-          <SelectField
-            changeHandler={this.selectChangeHandler}
-            searchQuery={this.state.selectQuery}
-          />
-          <SearchField changeHandler={this.searchChangeHandler} />
-        </div>
+    const tableToShow =
+      this.state.activeTab === "banks" ? (
         <Table
           favBanks={this.state.favBanks}
           banks={this.state.filteredBanks}
           loading={this.state.loading}
           favBanksHandler={this.favBanksHandler}
         />
+      ) : (
+        <Table
+          favBanks={this.state.favBanks}
+          banks={this.state.favBanks}
+          loading={false}
+          favBanksHandler={this.favBanksHandler}
+        />
+      );
+    return (
+      <Wrapper active={this.state.activeTab}>
+        <div className="wrapper">
+          <div className="header">
+            <div className="heading">Banks Search App</div>
+            <SearchField changeHandler={this.searchChangeHandler} />
+          </div>
+          <SelectField
+            changeHandler={this.selectChangeHandler}
+            searchQuery={this.state.selectQuery}
+          />
+        </div>
+        <div className="tables">
+          <div className="nav">
+            <div
+              className="banks"
+              onClick={() => this.switchTabHandler("banks")}
+              active={this.state.activeTab === "banks"}
+            >
+              Banks
+            </div>
+            <div
+              className="favorites"
+              onClick={() => this.switchTabHandler("favorites")}
+              active={this.state.activeTab === "favorites"}
+            >
+              Favorites
+            </div>
+          </div>
+          {tableToShow}
+        </div>
       </Wrapper>
     );
   }
