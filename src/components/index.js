@@ -40,12 +40,15 @@ class Landing extends Component {
     api
       .get("/banks?city=MUMBAI")
       .then(res =>
-        this.setState({
-          banks: res.data,
-          filteredBanks: res.data,
-          loading: false,
-          favBanks: []
-        })
+        this.setState(
+          {
+            banks: res.data,
+            filteredBanks: res.data,
+            loading: false,
+            favBanks: JSON.parse(localStorage.getItem("favBanks") || "[]")
+          },
+          console.log(res.data)
+        )
       )
       .catch(err => console.log(err));
   };
@@ -88,28 +91,23 @@ class Landing extends Component {
       .catch(err => console.log(err));
   };
 
-  favBanksHandler = bank => {
-    let fav = localStorage.getItem("favBanks")
-      ? localStorage.getItem("favBanks").split(",")
-      : [];
-
+  favBanksHandler = ifsc => {
+    let fav = JSON.parse(localStorage.getItem("favBanks") || "[]");
     console.log(fav);
-    if (fav.length !== 0) {
-      fav.forEach((el, index, arr) => (arr[index] = JSON.parse(el)));
-    }
-    if (fav.filter(el => bank.ifsc === el.ifsc).length > 0) {
-      fav = fav.filter(el => bank.ifsc !== el.ifsc);
+
+    if (fav.filter(el => ifsc === el.ifsc).length > 0) {
+      fav = fav.filter(el => ifsc !== el.ifsc);
     } else {
-      fav = [...fav, bank];
+      const bank = this.state.banks.filter(el => el.ifsc === ifsc);
+      fav = [...fav, bank[0]];
     }
-    if (fav.length !== 0) {
-      fav.forEach((el, index, arr) => (arr[index] = JSON.stringify(el)));
-    }
-    // localStorage.setItem("favBanks", fav.toString());
+    fav.forEach(bank => delete bank.favorite);
+    localStorage.setItem("favBanks", JSON.stringify(fav));
     this.setState({ favBanks: fav });
   };
 
   render() {
+    console.log(this.state.banks);
     return (
       <Wrapper>
         <div className="wrapper">

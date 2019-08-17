@@ -24,22 +24,29 @@ const TableWrapper = styled.div`
 `;
 const Table = props => {
   const processData = () => {
-    props.banks.forEach(bank => {
+    let bankDetails = [...props.banks];
+    bankDetails.forEach(bank => {
       if (props.favBanks.filter(el => el.ifsc === bank.ifsc).length > 0) {
         bank["favorite"] = (
-          <div className="favorite" onClick={() => props.favBanksHandler(bank)}>
+          <div
+            className="favorite"
+            onClick={() => props.favBanksHandler(bank.ifsc)}
+          >
             <IoIosStar />
           </div>
         );
       } else {
         bank["favorite"] = (
-          <div className="favorite" onClick={() => props.favBanksHandler(bank)}>
+          <div
+            className="favorite"
+            onClick={() => props.favBanksHandler(bank.ifsc)}
+          >
             <IoIosStarOutline />
           </div>
         );
       }
     });
-    return props.banks;
+    return bankDetails;
   };
   return (
     <TableWrapper {...props}>
@@ -88,9 +95,6 @@ const Table = props => {
         showPaginationBottom
         loading={props.loading}
       />
-      <div className="tip">
-        <em>Click on a row to add it to favBanks</em>
-      </div>
     </TableWrapper>
   );
 };
