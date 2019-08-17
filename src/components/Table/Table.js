@@ -95,6 +95,9 @@ const Table = props => {
         showPaginationBottom
         loading={props.loading}
       />
+      <div className="tip">
+        <em>Click on a row to add it to favBanks</em>
+      </div>
     </TableWrapper>
   );
 };

@@ -12,41 +12,39 @@ const Wrapper = styled.div`
     font-family: inherit;
     font-size: 100%;
   }
-  input::-webkit-search-decoration,
-  input::-webkit-search-cancel-button {
-    display: none;
-  }
 
   input[type="search"] {
     background: url("https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png")
-      no-repeat 10px 50%;
+      no-repeat 9.5px 50%;
     border: solid 1px #ccc;
     padding: 9px 10px 9px 32px;
-    width: 10rem;
-
-    -webkit-border-radius: 10em;
-    -moz-border-radius: 10em;
-    border-radius: 10em;
-
-    -webkit-transition: all 0.5s;
-    -moz-transition: all 0.5s;
+    border-radius: 50%;
     transition: all 0.5s;
+    width: 16.3px;
+    height: 16.3px;
+    padding-left: 10px;
+    color: transparent;
+    cursor: pointer;
+  }
+  input[type="search"]:hover {
+    background-color: #fff;
   }
   input[type="search"]:focus {
-    width: 20rem;
-    background-color: #fff;
     border-color: #66cc75;
-
-    -webkit-box-shadow: 0 0 5px rgba(109, 207, 246, 0.5);
-    -moz-box-shadow: 0 0 5px rgba(109, 207, 246, 0.5);
+    border-radius: 10em;
     box-shadow: 0 0 5px rgba(109, 207, 246, 0.5);
+    width: 130px;
+    padding-left: 40px;
+    color: #000;
+    background-color: #fff;
+    cursor: auto;
   }
-
-  input:-moz-placeholder {
-    color: #999;
-  }
-  input::-webkit-input-placeholder {
-    color: #999;
+  input[type="search"]::placeholder {
+    display: flex;
+    align-items: flex-start;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    letter-spacing: 3px;
   }
 `;
 
@@ -60,6 +58,11 @@ const SearchField = props => {
       />
     </Wrapper>
   );
+};
+
+SearchField.propTypes = {
+  changeHandler: PropTypes.func.isRequired,
+  searchQuery: PropTypes.string.isRequired
 };
 
 export default SearchField;
