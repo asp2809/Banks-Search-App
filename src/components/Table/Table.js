@@ -23,6 +23,7 @@ const TableWrapper = styled.div`
   }
 `;
 const Table = props => {
+  const { loading, ...restOfProps } = props;
   const processData = () => {
     let bankDetails = [...props.banks];
     bankDetails.forEach(bank => {
@@ -49,7 +50,7 @@ const Table = props => {
     return bankDetails;
   };
   return (
-    <TableWrapper {...props}>
+    <TableWrapper {...restOfProps}>
       <ReactTable
         data={processData()}
         columns={[
@@ -93,7 +94,7 @@ const Table = props => {
         defaultPageSize={10}
         className="-striped -highlight"
         showPaginationBottom
-        loading={props.loading}
+        loading={loading}
       />
     </TableWrapper>
   );
@@ -101,9 +102,13 @@ const Table = props => {
 
 Table.propTypes = {
   loading: PropTypes.bool.isRequired,
-  banks: PropTypes.array.isRequired
+  banks: PropTypes.array.isRequired,
+  favBanks: PropTypes.array.isRequired,
+  favBanksHandler: PropTypes.func.isRequired
 };
 
-Table.defaultProps = {};
+Table.defaultProps = {
+  loading: false
+};
 
 export default Table;

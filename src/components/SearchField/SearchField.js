@@ -63,7 +63,7 @@ const SearchField = props => {
 
 SearchField.propTypes = {
   changeHandler: PropTypes.func.isRequired,
-  searchQuery: PropTypes.string.isRequired
+  searchQuery: PropTypes.string
 };
 
 export default SearchField;

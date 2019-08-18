@@ -25,12 +25,6 @@ const CustomDropdown = styled(Dropdown)`
 CustomDropdown.propTypes = Dropdown.propTypes;
 CustomDropdown.defaultProps = Dropdown.defaultProps;
 
-const CustomDropdownToggle = styled(Dropdown.Toggle)`
-  /* width: 100%; */
-`;
-CustomDropdownToggle.propTypes = Dropdown.Toggle.propTypes;
-CustomDropdownToggle.defaultProps = Dropdown.Toggle.defaultProps;
-
 const CustomDropdownMenu = styled(Dropdown.Menu)`
   width: 100%;
   padding: 0px;
@@ -38,14 +32,14 @@ const CustomDropdownMenu = styled(Dropdown.Menu)`
 CustomDropdownMenu.propTypes = Dropdown.Menu.propTypes;
 CustomDropdownMenu.defaultProps = Dropdown.Menu.defaultProps;
 
+const Cities = ["Mumbai", "Delhi", "Chennai", "Hyderabad", "Pune", "Bangalore"];
+
 const SelectField = props => {
   const [searchQuery, setSearchQuery] = React.useState("");
   return (
     <Wrapper {...props}>
       <CustomDropdown onSelect={eventKey => {}}>
-        <CustomDropdownToggle btnStyle="flat">
-          {props.searchQuery}
-        </CustomDropdownToggle>
+        <Dropdown.Toggle btnStyle="flat">{props.searchQuery}</Dropdown.Toggle>
         <Dropdown.MenuWrapper>
           <div className="input-icon-group dropdown-menu-filter">
             <form
@@ -64,48 +58,15 @@ const SelectField = props => {
             </form>
           </div>
           <CustomDropdownMenu>
-            <MenuItem
-              eventKey={"Mumbai"}
-              onSelect={() => props.changeHandler("Mumbai")}
-            >
-              Mumbai
-            </MenuItem>
-            <MenuItem
-              eventKey={"Delhi"}
-              onSelect={() => props.changeHandler("Delhi")}
-            >
-              Delhi
-            </MenuItem>
-            <MenuItem
-              eventKey={"Chennai"}
-              onSelect={() => props.changeHandler("Chennai")}
-            >
-              Chennai
-            </MenuItem>
-            <MenuItem
-              eventKey={"Kolkata"}
-              onSelect={() => props.changeHandler("Kolkata")}
-            >
-              Kolkata
-            </MenuItem>
-            <MenuItem
-              eventKey={"Hyderabad"}
-              onSelect={() => props.changeHandler("Hyderabad")}
-            >
-              Hyderabad
-            </MenuItem>
-            <MenuItem
-              eventKey={"Bangaluru"}
-              onSelect={() => props.changeHandler("Bengaluru")}
-            >
-              Bangaluru
-            </MenuItem>
-            <MenuItem
-              eventKey={"Pune"}
-              onSelect={() => props.changeHandler("Pune")}
-            >
-              Pune
-            </MenuItem>
+            {Cities.map(city => (
+              <MenuItem
+                key={city}
+                eventKey={city}
+                onSelect={() => props.changeHandler(city)}
+              >
+                {city}
+              </MenuItem>
+            ))}
           </CustomDropdownMenu>
         </Dropdown.MenuWrapper>
       </CustomDropdown>

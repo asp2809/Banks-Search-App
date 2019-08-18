@@ -49,8 +49,6 @@ const Wrapper = styled.div`
       flex-direction: row;
       .banks,
       .favorites {
-        /* border-top-left-radius: 3px;
-        border-top-right-radius: 3px; */
         flex: 1;
         text-align: center;
         text-transform: uppercase;
@@ -233,9 +231,5 @@ class Landing extends Component {
     );
   }
 }
-
-Landing.propTypes = {};
-
-Landing.defaultProps = {};
 
 export default Landing;
