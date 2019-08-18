@@ -17,11 +17,12 @@ const Wrapper = styled.div`
     background: url("https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png")
       no-repeat 9.5px 50%;
     border: solid 1px #ccc;
+    background-color: #eee;
     padding: 9px 10px 9px 32px;
     border-radius: 50%;
     transition: all 0.5s;
-    width: 16.3px;
-    height: 16.3px;
+    width: 1.6rem;
+    height: 1.6rem;
     padding-left: 10px;
     color: transparent;
     cursor: pointer;

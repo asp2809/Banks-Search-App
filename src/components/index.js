@@ -1,11 +1,22 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { keyframes } from "styled-components";
 import { setup } from "axios-cache-adapter";
 import { toast } from "react-toastify";
 
 import SelectField from "./SelectField/SelectField";
 import SearchField from "./SearchField/SearchField";
 import Table from "./Table/Table";
+
+const typing = keyframes`
+  from { width: 0 }
+  to { width: 100% }
+`;
+
+const blinkCaret = keyframes`
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
+`;
 
 const Wrapper = styled.div`
   color: #000;
@@ -19,22 +30,33 @@ const Wrapper = styled.div`
       width: 100%;
       .heading {
         font-size: 1.2rem;
-        /* padding: 1rem 0; */
         letter-spacing: 3px;
         font-weight: 200;
         text-transform: uppercase;
+        overflow: hidden;
+        border-right: 0.15em solid orange;
+        white-space: nowrap;
+        letter-spacing: 0.15em;
+        animation: ${typing} 10s steps(50, end),
+          ${blinkCaret} 1s step-end infinite;
       }
+    }
+    .select {
+      display: flex;
+      align-items: center;
+      margin: 2rem auto;
     }
     margin: 3rem auto;
   }
   .tables {
+    box-shadow: 0 0 10px #ccc;
     .nav {
       display: flex;
       flex-direction: row;
       .banks,
       .favorites {
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
+        /* border-top-left-radius: 3px;
+        border-top-right-radius: 3px; */
         flex: 1;
         text-align: center;
         text-transform: uppercase;
@@ -48,13 +70,13 @@ const Wrapper = styled.div`
 
       .banks {
         background-color: ${props =>
-          props.active === "banks" ? "#00a5a5" : "#fff"};
+          props.active === "banks" ? "#00a5a5" : "#eee"};
         color: ${props => (props.active === "banks" ? "#fff" : "#000")};
       }
 
       .favorites {
         background-color: ${props =>
-          props.active === "favorites" ? "#00a5a5" : "#fff"};
+          props.active === "favorites" ? "#00a5a5" : "#eee"};
         color: ${props => (props.active === "favorites" ? "#fff" : "#000")};
       }
 
@@ -188,24 +210,25 @@ class Landing extends Component {
             <div className="heading">Banks Search App</div>
             <SearchField changeHandler={this.searchChangeHandler} />
           </div>
-          <SelectField
-            changeHandler={this.selectChangeHandler}
-            searchQuery={this.state.selectQuery}
-          />
+          <div className="select">
+            <div>City:&nbsp;&nbsp;</div>
+            <SelectField
+              changeHandler={this.selectChangeHandler}
+              searchQuery={this.state.selectQuery}
+            />
+          </div>
         </div>
         <div className="tables">
           <div className="nav">
             <div
               className="banks"
               onClick={() => this.switchTabHandler("banks")}
-              active={this.state.activeTab === "banks"}
             >
               Banks
             </div>
             <div
               className="favorites"
               onClick={() => this.switchTabHandler("favorites")}
-              active={this.state.activeTab === "favorites"}
             >
               Favorites
             </div>

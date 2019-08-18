@@ -9,7 +9,7 @@ const Wrapper = styled.div`
     input {
       padding: 0.7rem 1rem;
       border: 1px solid #ccc;
-      border-radius: 2rem;
+      border-radius: 0.5rem;
       outline: none;
     }
   }
@@ -26,7 +26,7 @@ CustomDropdown.propTypes = Dropdown.propTypes;
 CustomDropdown.defaultProps = Dropdown.defaultProps;
 
 const CustomDropdownToggle = styled(Dropdown.Toggle)`
-  width: 100%;
+  /* width: 100%; */
 `;
 CustomDropdownToggle.propTypes = Dropdown.Toggle.propTypes;
 CustomDropdownToggle.defaultProps = Dropdown.Toggle.defaultProps;
