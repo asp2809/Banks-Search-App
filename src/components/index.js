@@ -8,11 +8,6 @@ import SelectField from "./SelectField/SelectField";
 import SearchField from "./SearchField/SearchField";
 import Table from "./Table/Table";
 
-const typing = keyframes`
-  from { width: 0 }
-  to { width: 100% }
-`;
-
 const blinkCaret = keyframes`
   from, to { border-color: transparent }
   50% { border-color: orange; }
@@ -37,8 +32,7 @@ const Wrapper = styled.div`
         border-right: 0.15em solid orange;
         white-space: nowrap;
         letter-spacing: 0.15em;
-        animation: ${typing} 10s steps(50, end),
-          ${blinkCaret} 1s step-end infinite;
+        animation: ${blinkCaret} 1s step-end infinite;
       }
     }
     .select {
