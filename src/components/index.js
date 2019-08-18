@@ -203,7 +203,7 @@ class Landing extends Component {
             <SearchField changeHandler={this.searchChangeHandler} />
           </div>
           <div className="select">
-            <div>City:&nbsp;&nbsp;</div>
+            <div>City/State:&nbsp;&nbsp;</div>
             <SelectField
               changeHandler={this.selectChangeHandler}
               searchQuery={this.state.selectQuery}

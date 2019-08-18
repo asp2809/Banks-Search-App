@@ -36,16 +36,15 @@ const Wrapper = styled.div`
     box-shadow: 0 0 5px rgba(109, 207, 246, 0.5);
     width: 130px;
     padding-left: 40px;
-    color: #000;
+    color: #111;
     background-color: #fff;
     cursor: auto;
   }
   input[type="search"]::placeholder {
-    display: flex;
-    align-items: flex-start;
     text-transform: uppercase;
     font-size: 1.2rem;
     letter-spacing: 3px;
+    transform: translateY(-2px);
   }
 `;
 
